@@ -1,0 +1,17 @@
+{application, stone_im, [
+    {description, "A simple, reliable and lightweight instant messaging server built with Erlang/OTP."},
+    {vsn, "0.0.1"},
+    {registered, []},
+    {mod, {stone_im_app, []}},
+    {applications, [
+        kernel,
+        stdlib,
+        ranch,
+        cowlib,
+        cowboy
+    ]},
+    {env, []},
+    {modules, []},
+    {licenses, ["MIT"]},
+    {links, []}
+ ]}.
