@@ -2,7 +2,7 @@
     {description, "A simple, reliable and lightweight instant messaging server built with Erlang/OTP."},
     {vsn, "0.0.1"},
     {registered, []},
-    {mod, {stone_im_app, []}},
+    {mod, {stone_app, []}},
     {applications, [
         kernel,
         stdlib,

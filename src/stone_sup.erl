@@ -3,7 +3,7 @@
 %% @end
 %%%-------------------------------------------------------------------
 
--module(stone_im_sup).
+-module(stone_sup).
 
 -behaviour(supervisor).
 
