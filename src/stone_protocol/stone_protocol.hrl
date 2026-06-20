@@ -1,0 +1,7 @@
+-define(LIST_EMPTY,   16#00).
+-define(LIST_8,       16#F8).
+-define(LIST_16,      16#F9).
+-define(BINARY_8,     16#FA).
+-define(BINARY_20,    16#FB).
+-define(BINARY_32,    16#FC).
+-define(JID_PAIR,     16#FD).

@@ -8,7 +8,7 @@ init(Req, State) ->
 
 websocket_init(State) ->
     stone_log:info("Websocket connection established.", #{state => State}),
-    {ok, State}.
+    {ok, State#{user_id => undefined}}.
 
 websocket_handle({binary, Msg}, State) ->
     stone_log:info("Received message from client.", #{message => Msg}),
