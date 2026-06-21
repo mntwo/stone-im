@@ -6,6 +6,7 @@
 -export([attrs_with_empty/1, attrs_with_single/1, attrs_with_multi/1]).
 -export([content_with_nil/1, content_with_binary/1, content_with_single_node/1, content_with_multi_node/1, content_with_nest_node/1]).
 -export([jid_good/1, jid_bad/1]).
+-export([frame_good/1, frame_bad/1, frame_short/1]).
 
 -include_lib("common_test/include/ct.hrl").
 -include_lib("eunit/include/eunit.hrl").
@@ -14,13 +15,15 @@ all() ->
     [{group, desc},
     {group, attrs},
     {group, content},
-    {group, jid}].
+    {group, jid},
+    {group, frame}].
 
 groups() ->
     [{desc, [sequence], [desc_with_empty, desc_with_non_binary, desc_with_normal]},
     {attrs, [sequence], [attrs_with_empty, attrs_with_single, attrs_with_multi]},
     {content, [sequence], [content_with_nil, content_with_binary, content_with_single_node, content_with_multi_node, content_with_nest_node]},
-    {jid, [], [jid_good, jid_bad]}].
+    {jid, [sequence], [jid_good, jid_bad]},
+    {frame, [sequence], [frame_good, frame_bad, frame_short]}].
 
 init_per_suite(Config) ->
     application:ensure_all_started([stone_im]),
@@ -29,6 +32,26 @@ init_per_suite(Config) ->
 end_per_suite(Config) ->
     application:stop(stone_im),
     Config.
+
+frame_good(_Config) ->
+    Node = {~"message",
+        [{~"id",   ~"id-1"},
+        {~"from", {jid, ~"123@s1.im"}},
+        {~"to",   {jid, ~"456@g1.im"}},
+        {~"type", ~"chat"}],
+    ~"hello world~"},
+    Bin = stone_frame:encode(Node),
+    Node1 = stone_frame:decode(Bin),
+    ?assertEqual(Node, Node1),
+    ok.
+
+frame_bad(_Config) ->
+    ?assertException(error, {badmatch, _}, stone_frame:decode(~"hello world")),
+    ok.
+
+frame_short(_Config) ->
+    ?assertMatch({error, {too_short, _}}, stone_frame:decode(~"")),
+    ok.
 
 jid_good(_Config) ->
     Node = {~"message",
