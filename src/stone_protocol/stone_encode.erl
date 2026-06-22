@@ -20,7 +20,10 @@ node({Desc, Attrs, Content}) ->
     Len = length(Attrs),
     DescBin = encode_string(Desc),
     AttrsBin = encode_attrs(Attrs),
-    ContentBin = encode_content(Content),
+    ContentBin = case Content of
+        nil -> <<>>;
+        _ -> encode_content(Content)
+    end,
     ContentFlag = case Content of
         nil -> 0;
         _ -> 1
@@ -31,7 +34,7 @@ node({Desc, Attrs, Content}) ->
 encode_content(nil) ->
     <<?LIST_EMPTY>>;
 encode_content(Bin) when is_binary(Bin) ->
-    encode_string(Bin);
+    encode_binary(Bin);
 encode_content(Nodes) when is_list(Nodes) ->
     N = length(Nodes),
     H = encode_list_size(N),
